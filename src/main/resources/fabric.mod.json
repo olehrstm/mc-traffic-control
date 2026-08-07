@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "mc-traffic-control",
+  "version": "${version}",
+  "name": "mc-traffic-control",
+  "description": "Control the clients packet traffic.",
+  "authors": [
+    "ole101"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/olehrstm/mc-traffic-control"
+  },
+  "license": "MIT",
+  "icon": "assets/mc-traffic-control/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.ole101.mctrafficcontrol.McTrafficControl"
+    ],
+    "modmenu": [
+      "de.ole101.mctrafficcontrol.integrations.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "mc-traffic-control.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": "*",
+    "modmenu": ">=20.0.1",
+    "yet_another_config_lib_v3": ">=3.9.6+26.2-fabric"
+  }
+}
