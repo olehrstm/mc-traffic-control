@@ -1,29 +1,29 @@
-name: Build
+name: CI
 
 on:
   push:
-    branches: [ "develop", "hotfix/**" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "develop", "hotfix/**" ]
-
-run-name: Build+${{ github.run_number }} snapshot/${{ github.sha }}
+    branches: [ "main" ]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   build:
-
     name: 🏗️ Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v7
-      with:
-        fetch-depth: 0
+    - name: Checkout repository
+      uses: actions/checkout@v7
 
-    - name: Set up JDK
+    - name: Setup JDK
       uses: actions/setup-java@v5
       with:
         java-version: '25'
@@ -39,5 +39,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v7
       with:
-        name: Artifacts
+        name: mc-traffic-control-${{ github.sha }}
         path: build/libs/
+        if-no-files-found: 'error'
+        retention-days: 14

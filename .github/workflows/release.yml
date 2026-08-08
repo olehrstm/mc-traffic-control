@@ -1,34 +1,28 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'The version of the release (e.g. 1.0.0)'
-        required: true
-        type: string
-
-run-name: Build+${{ github.run_number }} release/${{ inputs.version }}
+  push:
+    branches: [ "main" ]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: release
+  cancel-in-progress: false
 
 permissions:
   contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
   release:
-
     name: 🎉 Release
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v7
-      with:
-        fetch-depth: 0
+    - name: Checkout repository
+      uses: actions/checkout@v7
 
-    - name: Set up JDK
+    - name: Setup JDK
       uses: actions/setup-java@v5
       with:
         java-version: '25'
@@ -38,23 +32,30 @@ jobs:
     - name: Make gradle wrapper executable
       run: chmod +x ./gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build --full-stacktrace -Pmod_version=${{ inputs.version }}
+    # Do not let Release Please create a release from a broken main branch.
+    - name: Verify build
+      run: ./gradlew build --full-stacktrace
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v7
+    - name: Release Please
+      id: release
+      uses: googleapis/release-please-action@v5
       with:
-        name: Artifacts
-        path: build/libs/
+        token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        release-type: simple
 
-    - name: Create release notes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ inputs.version }}
+    - name: Build release
+      if: ${{ steps.release.outputs.release_created == 'true' }}
       run: |
-        gh release create "$tag" \
-            --target main \
-            --repo="$GITHUB_REPOSITORY" \
-            --title="mc-traffic-control $tag" \
-            --generate-notes \
-            build/libs/*.jar
+        ./gradlew clean build \
+          --full-stacktrace \
+          -Pmod_version=${{ steps.release.outputs.version }}
+
+    - name: Upload release artifacts
+      if: ${{ steps.release.outputs.release_created == 'true' }}
+      env:
+        GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+      run: |
+        gh release upload \
+          "${{ steps.release.outputs.tag_name }}" \
+          build/libs/*.jar \
+          --clobber
