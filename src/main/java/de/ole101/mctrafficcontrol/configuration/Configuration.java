@@ -1,6 +1,7 @@
 package de.ole101.mctrafficcontrol.configuration;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
@@ -22,6 +23,9 @@ import static java.nio.file.Files.newBufferedWriter;
 public class Configuration {
 
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID + ".json");
+
+    @Accessors(fluent = true)
+    private MiscellaneousConfiguration miscellaneous = new MiscellaneousConfiguration();
 
     public Configuration loadFromFile() {
         File file = CONFIG_PATH.toFile();
