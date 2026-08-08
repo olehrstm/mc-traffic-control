@@ -30,6 +30,10 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+
     // ModMenu
     implementation("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
