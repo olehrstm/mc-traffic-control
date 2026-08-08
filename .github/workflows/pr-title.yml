@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate
+    name: 🔍 Validate
     runs-on: ubuntu-slim
 
     steps:
