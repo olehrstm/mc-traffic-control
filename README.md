@@ -1,9 +1,16 @@
 # mc-traffic-control
 
-## Setup
+mc-traffic-control is a small mod that allows you to control the client-side traffic in Minecraft.
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## Installation
 
-## License
+The mod will soon be available on Modrinth and through [GitHub Releases](https://github.com/olehrstm/mc-traffic-control/releases).
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+## Features
+
+- Override the client brand sent to servers
+
+## Roadmap
+
+- Block specific outgoing and incoming packets
+- Block outgoing and incoming custom payloads based on their channel identifier
