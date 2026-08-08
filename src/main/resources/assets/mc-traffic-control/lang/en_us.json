@@ -2,9 +2,9 @@
   "mtc.option.miscellaneous.label": "Miscellaneous",
   "mtc.option.miscellaneous.tooltip": "Options that do not fit into any other category",
   "mtc.option.miscellaneous.brand_override.section_title": "Brand override",
-  "mtc.option.miscellaneous.brand_override.section_tooltip": "Override the client brand that is sent to servers",
+  "mtc.option.miscellaneous.brand_override.section_tooltip": "Override the client brand sent to servers",
   "mtc.option.miscellaneous.brand_override_enabled.label": "Enabled",
-  "mtc.option.miscellaneous.brand_override_enabled.tooltip": "Toggles brand override",
-  "mtc.option.miscellaneous.brand_override.label": "Brand override",
-  "mtc.option.miscellaneous.brand_override.tooltip": "The new brand that should be used"
+  "mtc.option.miscellaneous.brand_override_enabled.tooltip": "Toggles the client brand override",
+  "mtc.option.miscellaneous.brand_override.label": "Brand",
+  "mtc.option.miscellaneous.brand_override.tooltip": "The client brand to send to servers"
 }
