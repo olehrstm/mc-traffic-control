@@ -1,10 +1,17 @@
 {
-  "mtc.option.miscellaneous.label": "Miscellaneous",
-  "mtc.option.miscellaneous.tooltip": "Options that do not fit into any other category",
-  "mtc.option.miscellaneous.brand_override.section_title": "Brand override",
-  "mtc.option.miscellaneous.brand_override.section_tooltip": "Override the client brand sent to servers",
-  "mtc.option.miscellaneous.brand_override_enabled.label": "Enabled",
-  "mtc.option.miscellaneous.brand_override_enabled.tooltip": "Toggles the client brand override",
-  "mtc.option.miscellaneous.brand_override.label": "Brand",
-  "mtc.option.miscellaneous.brand_override.tooltip": "The client brand to send to servers"
+  "mtc.category.payload.label": "Payloads",
+  "mtc.category.payload.channel_blocking": "Channel blocking",
+  "mtc.option.payload.channel_blocking_incoming_enabled.label": "Enabled (Incoming)",
+  "mtc.option.payload.channel_blocking_incoming_enabled.description": "Toggles the channel blocking of incoming custom payloads",
+  "mtc.option.payload.channel_blocking_incoming.label": "Channels (Incoming)",
+  "mtc.option.payload.channel_blocking_incoming.description": "The incoming custom payload channels to be blocked. Separated by new lines",
+  "mtc.option.payload.channel_blocking_outgoing_enabled.label": "Enabled (Outgoing)",
+  "mtc.option.payload.channel_blocking_outgoing_enabled.description": "Toggles the channel blocking of outgoing custom payloads",
+  "mtc.option.payload.channel_blocking_outgoing.label": "Channels (Outgoing)",
+  "mtc.option.payload.channel_blocking_outgoing.description": "The outgoing custom payload channels to be blocked. Separated by new lines",
+  "mtc.category.payload.brand_override": "Brand override",
+  "mtc.option.payload.brand_override_enabled.label": "Enabled",
+  "mtc.option.payload.brand_override_enabled.description": "Toggles the client brand override",
+  "mtc.option.payload.brand_override.label": "Brand",
+  "mtc.option.payload.brand_override.description": "The client brand to send to servers"
 }

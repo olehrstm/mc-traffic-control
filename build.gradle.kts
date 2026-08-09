@@ -37,8 +37,8 @@ dependencies {
     // ModMenu
     implementation("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
-    // YetAnotherConfigLib
-    implementation("dev.isxander:yet-another-config-lib:${providers.gradleProperty("yacl_version").get()}")
+    // Lattice
+    implementation("com.moulberry:lattice:2.1.0")
 }
 
 tasks.processResources {

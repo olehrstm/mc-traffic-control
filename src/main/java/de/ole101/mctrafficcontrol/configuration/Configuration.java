@@ -1,5 +1,6 @@
 package de.ole101.mctrafficcontrol.configuration;
 
+import com.moulberry.lattice.annotation.LatticeCategory;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,7 +26,8 @@ public class Configuration {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID + ".json");
 
     @Accessors(fluent = true)
-    private MiscellaneousConfiguration miscellaneous = new MiscellaneousConfiguration();
+    @LatticeCategory(name = "mtc.category.payload.label")
+    private PayloadConfiguration payload = new PayloadConfiguration();
 
     public Configuration loadFromFile() {
         File file = CONFIG_PATH.toFile();
