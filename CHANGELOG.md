@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0 (2026-08-10)
+
+## What's Changed
+* feat(payload): add channel-based payload blocking by @olehrstm in https://github.com/olehrstm/mc-traffic-control/pull/12
+* feat(packet): add packet-based blocking by @olehrstm in https://github.com/olehrstm/mc-traffic-control/pull/14
+* feat(configuration): reorganize configuration categories for improved clarity by @olehrstm in https://github.com/olehrstm/mc-traffic-control/pull/15
+
+
+**Full Changelog**: https://github.com/olehrstm/mc-traffic-control/compare/v1.0.0...v1.1.0
+
 ## 1.0.0 (2026-08-09)
 
 ## What's Changed
