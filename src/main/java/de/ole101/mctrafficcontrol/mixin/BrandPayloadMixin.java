@@ -1,6 +1,6 @@
 package de.ole101.mctrafficcontrol.mixin;
 
-import de.ole101.mctrafficcontrol.configuration.PacketConfiguration;
+import de.ole101.mctrafficcontrol.configuration.ClientIdentityConfiguration;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.BrandPayload;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,9 +16,9 @@ public class BrandPayloadMixin {
 
     @Inject(method = "write(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At(value = "HEAD"), cancellable = true)
     public void mtc$overrideBrand(FriendlyByteBuf output, CallbackInfo ci) {
-        PacketConfiguration config = configuration.packet();
-        String brandOverride = config.brandOverride.getOverride();
-        if (!config.brandOverride.isEnabled() || brandOverride == null || brandOverride.isEmpty()) {
+        ClientIdentityConfiguration config = configuration.clientIdentity();
+        String brandOverride = config.getBrand();
+        if (!config.isBrandOverrideEnabled() || brandOverride == null || brandOverride.isEmpty()) {
             return;
         }
         LOGGER.info("Overriding client brand with {}", brandOverride);

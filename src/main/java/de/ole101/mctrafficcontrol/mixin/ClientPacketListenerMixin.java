@@ -1,6 +1,6 @@
 package de.ole101.mctrafficcontrol.mixin;
 
-import de.ole101.mctrafficcontrol.configuration.PacketConfiguration;
+import de.ole101.mctrafficcontrol.configuration.PacketBlockingConfiguration;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.protocol.Packet;
@@ -24,7 +24,7 @@ public class ClientPacketListenerMixin {
     )
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void mtc$handleBundledPacket(Packet packet, PacketListener listener) {
-        PacketConfiguration.PacketBlocking config = configuration.packet().packetBlocking;
+        PacketBlockingConfiguration config = configuration.packetBlocking();
         boolean blocked = packet.type().flow() == PacketFlow.CLIENTBOUND
                 && config.isIncomingEnabled()
                 && config.getIncomingPackets().contains(packet.type().id().toString());

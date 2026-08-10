@@ -1,6 +1,7 @@
 package de.ole101.mctrafficcontrol.mixin;
 
-import de.ole101.mctrafficcontrol.configuration.PacketConfiguration;
+import de.ole101.mctrafficcontrol.configuration.PacketBlockingConfiguration;
+import de.ole101.mctrafficcontrol.configuration.PayloadConfiguration;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.Connection;
@@ -30,7 +31,7 @@ public class ConnectionMixin {
             boolean flush,
             CallbackInfo ci
     ) {
-        PacketConfiguration.PayloadChannelBlocking config = configuration.packet().payloadChannelBlocking;
+        PayloadConfiguration config = configuration.payload();
         if (packet instanceof ServerboundCustomPayloadPacket(
                 CustomPacketPayload payload
         ) && config.isOutgoingEnabled() && config.getOutgoingChannels().contains(payload.type().id().toString())) {
@@ -50,7 +51,7 @@ public class ConnectionMixin {
             boolean flush,
             CallbackInfo ci
     ) {
-        PacketConfiguration.PacketBlocking config = configuration.packet().packetBlocking;
+        PacketBlockingConfiguration config = configuration.packetBlocking();
         if (packet.type().flow() == PacketFlow.SERVERBOUND
                 && config.isOutgoingEnabled()
                 && config.getOutgoingPackets().contains(packet.type().id().toString())
@@ -70,7 +71,7 @@ public class ConnectionMixin {
             Packet<?> packet,
             CallbackInfo ci
     ) {
-        PacketConfiguration.PacketBlocking config = configuration.packet().packetBlocking;
+        PacketBlockingConfiguration config = configuration.packetBlocking();
         if (packet.type().flow() == PacketFlow.CLIENTBOUND
                 && config.isIncomingEnabled()
                 && config.getIncomingPackets().contains(packet.type().id().toString())

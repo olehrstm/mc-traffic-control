@@ -1,5 +1,6 @@
 package de.ole101.mctrafficcontrol.mixin;
 
+import de.ole101.mctrafficcontrol.configuration.PayloadConfiguration;
 import net.minecraft.network.protocol.common.ClientCommonPacketListener;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -26,7 +27,8 @@ public class ClientboundCustomPayloadPacketMixin {
             cancellable = true
     )
     private void mtc$blockIncomingPayload(ClientCommonPacketListener listener, CallbackInfo ci) {
-        if (configuration.packet().payloadChannelBlocking.isIncomingEnabled() && configuration.packet().payloadChannelBlocking.getIncomingChannels().contains(payload.type().id().toString())) {
+        PayloadConfiguration config = configuration.payload();
+        if (config.isIncomingEnabled() && config.getIncomingChannels().contains(payload.type().id().toString())) {
             LOGGER.info("Blocking incoming payload {}", payload.type().id());
             ci.cancel();
         }
