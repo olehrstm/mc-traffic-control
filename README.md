@@ -8,9 +8,6 @@ The mod will soon be available on Modrinth and through [GitHub Releases](https:/
 
 ## Features
 
-- Override the client brand sent to servers
-
-## Roadmap
-
 - Block specific outgoing and incoming packets
 - Block outgoing and incoming custom payloads based on their channel identifier
+- Override the client brand sent to servers
