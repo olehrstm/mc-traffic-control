@@ -3,7 +3,9 @@
   "package": "de.ole101.mctrafficcontrol.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "BrandPayloadMixin"
+    "BrandPayloadMixin",
+    "ClientboundCustomPayloadPacketMixin",
+    "ConnectionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
