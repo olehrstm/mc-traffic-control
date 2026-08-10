@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static de.ole101.mctrafficcontrol.McTrafficControl.LOGGER;
 import static de.ole101.mctrafficcontrol.McTrafficControl.configuration;
 
 @Mixin(ClientboundCustomPayloadPacket.class)
@@ -25,7 +26,8 @@ public class ClientboundCustomPayloadPacketMixin {
             cancellable = true
     )
     private void mtc$blockIncomingPayload(ClientCommonPacketListener listener, CallbackInfo ci) {
-        if (configuration.payload().channelBlocking.isIncomingEnabled() && configuration.payload().channelBlocking.getIncomingChannels().contains(payload.type().id().toString())) {
+        if (configuration.packet().payloadChannelBlocking.isIncomingEnabled() && configuration.packet().payloadChannelBlocking.getIncomingChannels().contains(payload.type().id().toString())) {
+            LOGGER.info("Blocking incoming payload {}", payload.type().id());
             ci.cancel();
         }
     }

@@ -26,8 +26,8 @@ public class Configuration {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID + ".json");
 
     @Accessors(fluent = true)
-    @LatticeCategory(name = "mtc.category.payload.label")
-    private PayloadConfiguration payload = new PayloadConfiguration();
+    @LatticeCategory(name = "mtc.category.packet.label")
+    private PacketConfiguration packet = new PacketConfiguration();
 
     public Configuration loadFromFile() {
         File file = CONFIG_PATH.toFile();

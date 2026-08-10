@@ -5,6 +5,7 @@
   "mixins": [
     "BrandPayloadMixin",
     "ClientboundCustomPayloadPacketMixin",
+    "ClientPacketListenerMixin",
     "ConnectionMixin"
   ],
   "injectors": {
