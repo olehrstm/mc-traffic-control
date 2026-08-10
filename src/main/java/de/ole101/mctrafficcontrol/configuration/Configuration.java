@@ -26,8 +26,16 @@ public class Configuration {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID + ".json");
 
     @Accessors(fluent = true)
-    @LatticeCategory(name = "mtc.category.packet.label")
-    private PacketConfiguration packet = new PacketConfiguration();
+    @LatticeCategory(name = "mtc.category.packet_blocking")
+    private PacketBlockingConfiguration packetBlocking = new PacketBlockingConfiguration();
+
+    @Accessors(fluent = true)
+    @LatticeCategory(name = "mtc.category.payload")
+    private PayloadConfiguration payload = new PayloadConfiguration();
+
+    @Accessors(fluent = true)
+    @LatticeCategory(name = "mtc.category.client_identity")
+    private ClientIdentityConfiguration clientIdentity = new ClientIdentityConfiguration();
 
     public Configuration loadFromFile() {
         File file = CONFIG_PATH.toFile();
