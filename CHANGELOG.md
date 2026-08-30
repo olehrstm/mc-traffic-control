@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.1.1...v1.2.0) (2026-08-30)
+
+
+### Features
+
+* implement component viewer for inspecting item data components ([#21](https://github.com/olehrstm/mc-traffic-control/issues/21)) ([1d562fb](https://github.com/olehrstm/mc-traffic-control/commit/1d562fb080fd6e262d43d8944146dcec552c6114))
+
 ## [1.1.1](https://github.com/olehrstm/mc-traffic-control/compare/v1.1.0...v1.1.1) (2026-08-10)
 
 
