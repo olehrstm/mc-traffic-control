@@ -3,10 +3,13 @@
   "package": "de.ole101.mctrafficcontrol.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "AbstractContainerScreenMixin",
+    "AbstractRecipeBookScreenMixin",
     "BrandPayloadMixin",
     "ClientboundCustomPayloadPacketMixin",
     "ClientPacketListenerMixin",
-    "ConnectionMixin"
+    "ConnectionMixin",
+    "CreativeModeInventoryScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

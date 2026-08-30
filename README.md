@@ -11,3 +11,4 @@ The mod will soon be available on Modrinth and through [GitHub Releases](https:/
 - Block specific outgoing and incoming packets
 - Block outgoing and incoming custom payloads based on their channel identifier
 - Override the client brand sent to servers
+- Inspect the patched and default data components of items in container screens

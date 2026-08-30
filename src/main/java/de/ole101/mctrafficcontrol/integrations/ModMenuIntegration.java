@@ -12,6 +12,7 @@ public class ModMenuIntegration implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        configuration.loadKeybinds();
         LatticeElements elements = LatticeElements.fromAnnotations(CONFIG_TITLE, configuration);
         return parent -> Lattice.createConfigScreen(elements, configuration::saveToFile, parent);
     }
