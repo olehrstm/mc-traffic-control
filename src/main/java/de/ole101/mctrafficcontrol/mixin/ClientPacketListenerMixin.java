@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import static de.ole101.mctrafficcontrol.McTrafficControl.CONTAINER_PACKET_WIDGET;
 import static de.ole101.mctrafficcontrol.McTrafficControl.LOGGER;
 import static de.ole101.mctrafficcontrol.McTrafficControl.configuration;
 
@@ -34,6 +35,7 @@ public class ClientPacketListenerMixin {
             return;
         }
 
+        CONTAINER_PACKET_WIDGET.addPacket(false, packet);
         packet.handle(listener);
     }
 }
