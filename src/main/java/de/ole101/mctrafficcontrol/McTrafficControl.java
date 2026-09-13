@@ -4,6 +4,7 @@ import com.moulberry.lattice.Lattice;
 import com.moulberry.lattice.element.LatticeElements;
 import de.ole101.mctrafficcontrol.configuration.Configuration;
 import de.ole101.mctrafficcontrol.gui.widgets.ComponentViewerWidget;
+import de.ole101.mctrafficcontrol.gui.widgets.ContainerPacketWidget;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -40,8 +41,10 @@ public class McTrafficControl implements ModInitializer {
 
     public static final KeyMapping.Category KEY_CATEGORY = register(id("name"));
     public static final KeyMapping COMPONENT_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_components", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
+    public static final KeyMapping CONTAINER_PACKET_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_container_packets", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
 
     public static final ComponentViewerWidget COMPONENT_VIEWER_WIDGET = new ComponentViewerWidget();
+    public static final ContainerPacketWidget CONTAINER_PACKET_WIDGET = new ContainerPacketWidget();
 
     @Override
     public void onInitialize() {

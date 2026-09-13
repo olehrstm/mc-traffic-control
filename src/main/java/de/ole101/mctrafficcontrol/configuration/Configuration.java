@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.nio.file.Path;
 
 import static de.ole101.mctrafficcontrol.McTrafficControl.COMPONENT_VIEWER_KEY;
+import static de.ole101.mctrafficcontrol.McTrafficControl.CONTAINER_PACKET_VIEWER_KEY;
 import static de.ole101.mctrafficcontrol.McTrafficControl.LOGGER;
 import static de.ole101.mctrafficcontrol.McTrafficControl.MOD_ID;
 import static de.ole101.mctrafficcontrol.utils.ModUtils.GSON;
@@ -41,6 +42,10 @@ public class Configuration {
     @Accessors(fluent = true)
     @LatticeCategory(name = "mtc.category.component_viewing")
     private ComponentViewingConfiguration componentViewing = new ComponentViewingConfiguration();
+
+    @Accessors(fluent = true)
+    @LatticeCategory(name = "mtc.category.container_packet_viewing")
+    private ContainerPacketViewingConfiguration containerPacketViewing = new ContainerPacketViewingConfiguration();
 
     public Configuration loadFromFile() {
         File file = CONFIG_PATH.toFile();
@@ -80,5 +85,6 @@ public class Configuration {
 
     public void loadKeybinds() {
         componentViewing().setKeybind(COMPONENT_VIEWER_KEY);
+        containerPacketViewing().setKeybind(CONTAINER_PACKET_VIEWER_KEY);
     }
 }
