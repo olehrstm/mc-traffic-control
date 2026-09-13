@@ -6,6 +6,7 @@ import de.ole101.mctrafficcontrol.configuration.Configuration;
 import de.ole101.mctrafficcontrol.gui.widgets.ComponentViewerWidget;
 import de.ole101.mctrafficcontrol.gui.widgets.ContainerPacketWidget;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.MutableComponent;
@@ -53,6 +54,14 @@ public class McTrafficControl implements ModInitializer {
         // Proceed with mild caution.
 
         configuration.loadKeybinds();
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (CONTAINER_PACKET_VIEWER_KEY.consumeClick()) {
+                if (client.gui.screen() == null) {
+                    CONTAINER_PACKET_WIDGET.open();
+                }
+            }
+        });
 
         Minecraft.getInstance().submit(() -> {
             LatticeElements elements = LatticeElements.fromAnnotations(CONFIG_TITLE, configuration);

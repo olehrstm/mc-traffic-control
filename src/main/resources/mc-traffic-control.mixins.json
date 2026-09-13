@@ -5,11 +5,15 @@
   "mixins": [
     "AbstractContainerScreenMixin",
     "AbstractRecipeBookScreenMixin",
+    "BitmapProviderDefinitionMixin",
     "BrandPayloadMixin",
+    "BuilderIdAccessor",
     "ClientboundCustomPayloadPacketMixin",
     "ClientPacketListenerMixin",
     "ConnectionMixin",
-    "CreativeModeInventoryScreenMixin"
+    "CreativeModeInventoryScreenMixin",
+    "FontManagerMixin",
+    "FontSetAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

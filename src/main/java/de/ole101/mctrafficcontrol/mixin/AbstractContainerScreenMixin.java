@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static de.ole101.mctrafficcontrol.McTrafficControl.COMPONENT_VIEWER_WIDGET;
+import static de.ole101.mctrafficcontrol.McTrafficControl.CONTAINER_PACKET_WIDGET;
 import static de.ole101.mctrafficcontrol.McTrafficControl.configuration;
 
 @Mixin(AbstractContainerScreen.class)
@@ -29,14 +30,14 @@ public class AbstractContainerScreenMixin {
     private void mtc$ignoreSlotsBehindViewer(int left, int top, int w, int h,
                                              double xm, double ym,
                                              CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.isHovering(xm, ym)) {
+        if (COMPONENT_VIEWER_WIDGET.isHovering(xm, ym) || CONTAINER_PACKET_WIDGET.isHovering(xm, ym)) {
             cir.setReturnValue(false);
         }
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void mtc$viewComponents(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.keyPressed(event)) {
+        if (COMPONENT_VIEWER_WIDGET.keyPressed(event) || CONTAINER_PACKET_WIDGET.keyPressed(event)) {
             cir.setReturnValue(true);
             return;
         }
@@ -44,13 +45,19 @@ public class AbstractContainerScreenMixin {
         if (configuration.componentViewing().getKeybind().matches(event)) {
             COMPONENT_VIEWER_WIDGET.setItemStack(hoveredSlot == null ? null : hoveredSlot.getItem().copy());
             cir.setReturnValue(true);
+            return;
+        }
+
+        if (configuration.containerPacketViewing().getKeybind().matches(event)) {
+            CONTAINER_PACKET_WIDGET.toggle();
+            cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
     private void mtc$clickViewer(MouseButtonEvent event, boolean doubleClick,
                                  CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseClicked(event)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseClicked(event) || CONTAINER_PACKET_WIDGET.mouseClicked(event)) {
             cir.setReturnValue(true);
         }
     }
@@ -58,14 +65,14 @@ public class AbstractContainerScreenMixin {
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
     private void mtc$dragViewer(MouseButtonEvent event, double dx, double dy,
                                 CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseDragged(event)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseDragged(event) || CONTAINER_PACKET_WIDGET.mouseDragged(event)) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
     private void mtc$releaseViewer(MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseReleased(event)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseReleased(event) || CONTAINER_PACKET_WIDGET.mouseReleased(event)) {
             cir.setReturnValue(true);
         }
     }
@@ -73,7 +80,7 @@ public class AbstractContainerScreenMixin {
     @Inject(method = "mouseScrolled", at = @At("HEAD"), cancellable = true)
     private void mtc$scrollViewer(double x, double y, double scrollX, double scrollY,
                                   CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseScrolled(x, y, scrollY)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseScrolled(x, y, scrollY) || CONTAINER_PACKET_WIDGET.mouseScrolled(x, y, scrollY)) {
             cir.setReturnValue(true);
         }
     }
@@ -86,6 +93,7 @@ public class AbstractContainerScreenMixin {
             return;
         }
 
+        CONTAINER_PACKET_WIDGET.extractRenderState(graphics, mouseX, mouseY);
         COMPONENT_VIEWER_WIDGET.extractRenderState(graphics, mouseX, mouseY);
     }
 
