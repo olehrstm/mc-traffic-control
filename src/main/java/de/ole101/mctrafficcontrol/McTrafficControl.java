@@ -4,7 +4,9 @@ import com.moulberry.lattice.Lattice;
 import com.moulberry.lattice.element.LatticeElements;
 import de.ole101.mctrafficcontrol.configuration.Configuration;
 import de.ole101.mctrafficcontrol.gui.widgets.ComponentViewerWidget;
+import de.ole101.mctrafficcontrol.gui.widgets.ContainerPacketWidget;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.MutableComponent;
@@ -40,8 +42,10 @@ public class McTrafficControl implements ModInitializer {
 
     public static final KeyMapping.Category KEY_CATEGORY = register(id("name"));
     public static final KeyMapping COMPONENT_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_components", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
+    public static final KeyMapping CONTAINER_PACKET_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_container_packets", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
 
     public static final ComponentViewerWidget COMPONENT_VIEWER_WIDGET = new ComponentViewerWidget();
+    public static final ContainerPacketWidget CONTAINER_PACKET_WIDGET = new ContainerPacketWidget();
 
     @Override
     public void onInitialize() {
@@ -50,6 +54,14 @@ public class McTrafficControl implements ModInitializer {
         // Proceed with mild caution.
 
         configuration.loadKeybinds();
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (CONTAINER_PACKET_VIEWER_KEY.consumeClick()) {
+                if (client.gui.screen() == null) {
+                    CONTAINER_PACKET_WIDGET.open();
+                }
+            }
+        });
 
         Minecraft.getInstance().submit(() -> {
             LatticeElements elements = LatticeElements.fromAnnotations(CONFIG_TITLE, configuration);

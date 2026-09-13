@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static de.ole101.mctrafficcontrol.McTrafficControl.COMPONENT_VIEWER_WIDGET;
+import static de.ole101.mctrafficcontrol.McTrafficControl.CONTAINER_PACKET_WIDGET;
 import static de.ole101.mctrafficcontrol.McTrafficControl.configuration;
 
 @Mixin(CreativeModeInventoryScreen.class)
@@ -26,7 +27,7 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void mtc$viewComponentsInCreativeInventory(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.keyPressed(event)) {
+        if (COMPONENT_VIEWER_WIDGET.keyPressed(event) || CONTAINER_PACKET_WIDGET.keyPressed(event)) {
             cir.setReturnValue(true);
             return;
         }
@@ -34,13 +35,19 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
         if (configuration.componentViewing().getKeybind().matches(event)) {
             COMPONENT_VIEWER_WIDGET.setItemStack(this.hoveredSlot == null ? null : this.hoveredSlot.getItem().copy());
             cir.setReturnValue(true);
+            return;
+        }
+
+        if (configuration.containerPacketViewing().getKeybind().matches(event)) {
+            CONTAINER_PACKET_WIDGET.toggle();
+            cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
     private void mtc$clickViewerInCreativeInventory(MouseButtonEvent event, boolean doubleClick,
                                                     CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseClicked(event)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseClicked(event) || CONTAINER_PACKET_WIDGET.mouseClicked(event)) {
             cir.setReturnValue(true);
         }
     }
@@ -48,7 +55,7 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
     private void mtc$dragViewerInCreativeInventory(MouseButtonEvent event, double dx, double dy,
                                                    CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseDragged(event)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseDragged(event) || CONTAINER_PACKET_WIDGET.mouseDragged(event)) {
             cir.setReturnValue(true);
         }
     }
@@ -56,7 +63,7 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
     @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
     private void mtc$releaseViewerInCreativeInventory(MouseButtonEvent event,
                                                       CallbackInfoReturnable<Boolean> cir) {
-        if (COMPONENT_VIEWER_WIDGET.mouseReleased(event)) {
+        if (COMPONENT_VIEWER_WIDGET.mouseReleased(event) || CONTAINER_PACKET_WIDGET.mouseReleased(event)) {
             cir.setReturnValue(true);
         }
     }
@@ -64,6 +71,7 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
     @Inject(method = "extractRenderState", at = @At("RETURN"))
     private void mtc$renderViewerInCreativeInventory(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
                                                      float partialTick, CallbackInfo ci) {
+        CONTAINER_PACKET_WIDGET.extractRenderState(graphics, mouseX, mouseY);
         COMPONENT_VIEWER_WIDGET.extractRenderState(graphics, mouseX, mouseY);
     }
 }

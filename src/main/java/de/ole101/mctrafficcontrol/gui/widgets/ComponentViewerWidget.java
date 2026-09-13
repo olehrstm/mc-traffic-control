@@ -6,10 +6,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
-import net.minecraft.nbt.TextComponentTagVisitor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.item.ItemStack;
 
@@ -19,10 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
-public final class ComponentViewerWidget extends AbstractTextViewerWidget {
+public class ComponentViewerWidget extends AbstractTextViewerWidget {
 
-    private static final int MAX_LINE_WIDTH = 512;
+    private final List<Consumer<List<FormattedText>>> blocks = new ArrayList<>();
 
     public ComponentViewerWidget() {
         super(Component.translatable("mtc.component_viewer.title"));
@@ -34,31 +33,30 @@ public final class ComponentViewerWidget extends AbstractTextViewerWidget {
             return;
         }
 
-        List<FormattedText> componentLines = new ArrayList<>();
+        clearDisplayTexts();
+        blocks.clear();
+
         var registryAccess = Minecraft.getInstance().player.registryAccess();
         var nbtOps = RegistryOps.create(NbtOps.INSTANCE, registryAccess);
         var patch = itemStack.getComponentsPatch();
         Set<DataComponentType<?>> patchedComponents = new HashSet<>();
-        boolean addPatchedHeader = true;
+        if (!patch.isEmpty()) {
+            addHeader("mtc.component_viewer.patched");
+        }
 
         for (Map.Entry<DataComponentType<?>, Optional<?>> entry : patch.entrySet()) {
             DataComponentType<?> componentType = entry.getKey();
 
-            if (addPatchedHeader) {
-                addPatchedHeader = false;
-                addHeader(componentLines, "mtc.component_viewer.patched");
-            }
-
             if (entry.getValue().isEmpty()) {
-                componentLines.add(Component.literal(componentType.toString()).withColor(0xE5C17C));
-                componentLines.add(Component.translatable("mtc.component_viewer.removed").withStyle(ChatFormatting.RED));
-                componentLines.add(FormattedText.EMPTY);
+                addText(Component.literal(componentType.toString()).withColor(0xE5C17C));
+                addText(Component.translatable("mtc.component_viewer.removed").withStyle(ChatFormatting.RED));
+                addText(FormattedText.EMPTY);
                 continue;
             }
 
             TypedDataComponent<?> component = itemStack.getTyped(componentType);
             if (component != null) {
-                addLinesForDataComponent(componentLines, component, nbtOps);
+                addLinesForDataComponent(component, nbtOps);
                 patchedComponents.add(componentType);
             }
         }
@@ -71,31 +69,49 @@ public final class ComponentViewerWidget extends AbstractTextViewerWidget {
 
             if (addDefaultHeader) {
                 addDefaultHeader = false;
-                addHeader(componentLines, "mtc.component_viewer.default");
+                addHeader("mtc.component_viewer.default");
             }
 
-            addLinesForDataComponent(componentLines, component, nbtOps);
+            addLinesForDataComponent(component, nbtOps);
         }
 
-        setLines(componentLines);
+        setLines(layoutLines());
     }
 
-    private void addHeader(List<FormattedText> componentLines, String translationKey) {
-        componentLines.add(Component.translatable(translationKey).withColor(0xFFFFFF).withStyle(ChatFormatting.BOLD));
-        componentLines.add(FormattedText.EMPTY);
+    @Override
+    protected void displayTextsChanged() {
+        replaceLines(layoutLines());
     }
 
-    private void addLinesForDataComponent(List<FormattedText> componentLines,
-                                          TypedDataComponent<?> component,
-                                          RegistryOps<Tag> nbtOps) {
-        componentLines.add(Component.literal(component.type().toString()).withColor(0xE5C17C));
+    @Override
+    protected void onClosed() {
+        blocks.clear();
+    }
 
-        component.encodeValue(nbtOps).resultOrPartial(error -> componentLines.add(
+    private List<FormattedText> layoutLines() {
+        List<FormattedText> lines = new ArrayList<>();
+        blocks.forEach(block -> block.accept(lines));
+        return lines;
+    }
+
+    private void addText(FormattedText text) {
+        blocks.add(lines -> lines.add(text));
+    }
+
+    private void addHeader(String translationKey) {
+        addText(Component.translatable(translationKey).withColor(0xFFFFFF).withStyle(ChatFormatting.BOLD));
+        addText(FormattedText.EMPTY);
+    }
+
+    private void addLinesForDataComponent(TypedDataComponent<?> component, RegistryOps<Tag> nbtOps) {
+        addText(Component.literal(component.type().toString()).withColor(0xE5C17C));
+
+        component.encodeValue(nbtOps).resultOrPartial(error -> addText(
                 Component.translatable("mtc.component_viewer.encoding_error", error).withStyle(ChatFormatting.RED)
         )).ifPresent(encoded -> {
-            Component formattedData = new TextComponentTagVisitor("  ").visit(encoded);
-            componentLines.addAll(FONT.get().getSplitter().splitLines(formattedData, MAX_LINE_WIDTH, Style.EMPTY));
+            NbtTree.Node node = NbtTree.node(null, encoded, 0, false, false, null, this::displayText);
+            blocks.add(lines -> node.appendLines((line, owner) -> lines.add(line)));
         });
-        componentLines.add(FormattedText.EMPTY);
+        addText(FormattedText.EMPTY);
     }
 }
