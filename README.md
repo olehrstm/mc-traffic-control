@@ -4,7 +4,8 @@ mc-traffic-control is a small mod that allows you to control the client-side tra
 
 ## Installation
 
-The mod will soon be available on Modrinth and through [GitHub Releases](https://github.com/olehrstm/mc-traffic-control/releases).
+The mod is available on [Modrinth](https://modrinth.com/project/9DQUkMnk) and
+through [GitHub Releases](https://github.com/olehrstm/mc-traffic-control/releases).
 
 ## Features
 
