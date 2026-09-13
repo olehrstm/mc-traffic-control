@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.2.0...v1.3.0) (2026-09-13)
+
+
+### Features
+
+* add container packet viewer ([#26](https://github.com/olehrstm/mc-traffic-control/issues/26)) ([05d45f7](https://github.com/olehrstm/mc-traffic-control/commit/05d45f7a2f945c87235c2edc7d62b7475e380978))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.projectlombok:lombok to v1.18.48 ([#23](https://github.com/olehrstm/mc-traffic-control/issues/23)) ([bb32bcc](https://github.com/olehrstm/mc-traffic-control/commit/bb32bcc59edf37fc73044ea0e965a51674457a1c))
+
 ## [1.2.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.1.1...v1.2.0) (2026-08-30)
 
 
