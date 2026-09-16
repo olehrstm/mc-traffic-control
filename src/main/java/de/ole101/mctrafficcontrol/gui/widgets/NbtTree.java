@@ -93,23 +93,23 @@ class NbtTree {
         String open = tag instanceof CompoundTag ? "{" : "[";
         String close = tag instanceof CompoundTag ? "}" : "]";
 
-        MutableComponent openLine = Component.literal(indent);
-        MutableComponent collapsedLine = Component.literal(indent);
+        MutableComponent openPrefix = Component.literal(indent);
+        MutableComponent collapsedPrefix = Component.literal(indent);
         if (foldable) {
-            openLine.append(Component.literal("▼ ").withStyle(ChatFormatting.GRAY));
-            collapsedLine.append(Component.literal("▶ ").withStyle(ChatFormatting.GRAY));
+            openPrefix.append(Component.literal("▼ ").withStyle(ChatFormatting.GRAY));
+            collapsedPrefix.append(Component.literal("▶ ").withStyle(ChatFormatting.GRAY));
         }
 
-        openLine.append(keyPart.copy()).append(open);
-        collapsedLine.append(keyPart.copy())
+        MutableComponent openLine = keyPart.copy().append(open);
+        MutableComponent collapsedLine = keyPart.copy()
                 .append(open)
                 .append(Component.literal("...").withStyle(ChatFormatting.GRAY))
                 .append(close).append(separator).append(" ")
                 .append(Component.translatable("mtc.container_packet_viewer.entries", size).withStyle(ChatFormatting.GRAY));
 
         return new Node(
-                factory.create(openLine, MAX_LINE_WIDTH, continuationIndent),
-                foldable ? factory.create(collapsedLine, MAX_LINE_WIDTH, continuationIndent) : null,
+                factory.create(openPrefix, openLine, MAX_LINE_WIDTH, continuationIndent),
+                foldable ? factory.create(collapsedPrefix, collapsedLine, MAX_LINE_WIDTH, continuationIndent) : null,
                 factory.create(Component.literal(indent + arrowPadding + close + separator), MAX_LINE_WIDTH, continuationIndent),
                 children(tag, depth + 1, foldable, font, factory)
         );
@@ -146,7 +146,11 @@ class NbtTree {
     @FunctionalInterface
     interface DisplayTextFactory {
 
-        DisplayText create(FormattedText source, int maxWidth, String continuationIndent);
+        DisplayText create(FormattedText prefix, FormattedText source, int maxWidth, String continuationIndent);
+
+        default DisplayText create(FormattedText source, int maxWidth, String continuationIndent) {
+            return create(FormattedText.EMPTY, source, maxWidth, continuationIndent);
+        }
     }
 
     @FunctionalInterface

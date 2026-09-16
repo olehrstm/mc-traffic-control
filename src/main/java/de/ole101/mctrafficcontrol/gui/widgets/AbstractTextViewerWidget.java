@@ -153,7 +153,11 @@ public abstract class AbstractTextViewerWidget extends AbstractScrollArea {
     }
 
     protected final DisplayText displayText(FormattedText source, int maxWidth, String continuationIndent) {
-        DisplayText text = new DisplayText(nextDisplayTextId++, source, maxWidth, Component.literal(continuationIndent));
+        return displayText(FormattedText.EMPTY, source, maxWidth, continuationIndent);
+    }
+
+    protected final DisplayText displayText(FormattedText prefix, FormattedText source, int maxWidth, String continuationIndent) {
+        DisplayText text = new DisplayText(nextDisplayTextId++, prefix, source, maxWidth, Component.literal(continuationIndent));
         displayTexts.put(text.id, text);
         return text;
     }
@@ -307,6 +311,7 @@ public abstract class AbstractTextViewerWidget extends AbstractScrollArea {
     protected static class DisplayText {
 
         private final int id;
+        private final FormattedText prefix;
         private final FormattedText source;
         private final int maxWidth;
         private final Component continuationIndent;
@@ -335,6 +340,7 @@ public abstract class AbstractTextViewerWidget extends AbstractScrollArea {
 
         private FormattedText render() {
             List<FormattedText> parts = new ArrayList<>();
+            parts.add(prefix);
             int[] position = { 0 };
 
             source.visit((style, content) -> {
