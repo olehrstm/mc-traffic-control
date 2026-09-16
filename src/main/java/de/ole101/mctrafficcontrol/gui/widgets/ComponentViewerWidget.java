@@ -21,7 +21,8 @@ import java.util.function.Consumer;
 
 public class ComponentViewerWidget extends AbstractTextViewerWidget {
 
-    private final List<Consumer<List<FormattedText>>> blocks = new ArrayList<>();
+    private final List<Consumer<NbtTree.LineConsumer>> blocks = new ArrayList<>();
+    private final List<NbtTree.Foldable> lineOwners = new ArrayList<>();
 
     public ComponentViewerWidget() {
         super(Component.translatable("mtc.component_viewer.title"));
@@ -79,6 +80,21 @@ public class ComponentViewerWidget extends AbstractTextViewerWidget {
     }
 
     @Override
+    protected void lineClicked(int index, boolean shiftDown) {
+        if (!(lineOwners.get(index) instanceof NbtTree.Node node)) {
+            return;
+        }
+
+        if (shiftDown) {
+            node.setCollapsedRecursively(!node.collapsed);
+        } else {
+            node.collapsed = !node.collapsed;
+        }
+
+        replaceLines(layoutLines());
+    }
+
+    @Override
     protected void displayTextsChanged() {
         replaceLines(layoutLines());
     }
@@ -86,16 +102,21 @@ public class ComponentViewerWidget extends AbstractTextViewerWidget {
     @Override
     protected void onClosed() {
         blocks.clear();
+        lineOwners.clear();
     }
 
     private List<FormattedText> layoutLines() {
         List<FormattedText> lines = new ArrayList<>();
-        blocks.forEach(block -> block.accept(lines));
+        lineOwners.clear();
+        blocks.forEach(block -> block.accept((line, owner) -> {
+            lines.add(line);
+            lineOwners.add(owner);
+        }));
         return lines;
     }
 
     private void addText(FormattedText text) {
-        blocks.add(lines -> lines.add(text));
+        blocks.add(consumer -> consumer.accept(text, null));
     }
 
     private void addHeader(String translationKey) {
@@ -109,8 +130,8 @@ public class ComponentViewerWidget extends AbstractTextViewerWidget {
         component.encodeValue(nbtOps).resultOrPartial(error -> addText(
                 Component.translatable("mtc.component_viewer.encoding_error", error).withStyle(ChatFormatting.RED)
         )).ifPresent(encoded -> {
-            NbtTree.Node node = NbtTree.node(null, encoded, 0, false, false, null, this::displayText);
-            blocks.add(lines -> node.appendLines((line, owner) -> lines.add(line)));
+            NbtTree.Node node = NbtTree.node(null, encoded, 0, false, true, null, this::displayText);
+            blocks.add(node::appendLines);
         });
         addText(FormattedText.EMPTY);
     }
