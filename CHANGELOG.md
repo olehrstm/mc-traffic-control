@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.2.0...v1.3.0) (2026-09-16)
+
+
+### Features
+
+* add container packet viewer ([#26](https://github.com/olehrstm/mc-traffic-control/issues/26)) ([05d45f7](https://github.com/olehrstm/mc-traffic-control/commit/05d45f7a2f945c87235c2edc7d62b7475e380978))
+* make nbt in component viewer foldable ([#29](https://github.com/olehrstm/mc-traffic-control/issues/29)) ([aad6857](https://github.com/olehrstm/mc-traffic-control/commit/aad6857e7f550cb53f56f69e87ec2d5c80e22811))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.projectlombok:lombok to v1.18.48 ([#23](https://github.com/olehrstm/mc-traffic-control/issues/23)) ([bb32bcc](https://github.com/olehrstm/mc-traffic-control/commit/bb32bcc59edf37fc73044ea0e965a51674457a1c))
+* exclude NBT expand/collapse icons from custom glyph processing ([#28](https://github.com/olehrstm/mc-traffic-control/issues/28)) ([4d16775](https://github.com/olehrstm/mc-traffic-control/commit/4d16775973c6b0823b15aa53c7154495e485a989))
+
 ## [1.2.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.1.1...v1.2.0) (2026-08-30)
 
 
