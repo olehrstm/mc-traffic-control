@@ -38,7 +38,7 @@ dependencies {
     implementation("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
     // Lattice
-    implementation("com.moulberry:lattice:2.1.0")
+    implementation("com.moulberry:lattice:2.2.0")
 }
 
 tasks.processResources {
