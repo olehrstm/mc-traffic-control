@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.3.0...v1.4.0) (2026-10-12)
+
+
+### Features
+
+* add support for 26.3 ([#32](https://github.com/olehrstm/mc-traffic-control/issues/32)) ([2ed3600](https://github.com/olehrstm/mc-traffic-control/commit/2ed3600cfe2fc63b59368428fc67782726bba6f3))
+
 ## [1.3.0](https://github.com/olehrstm/mc-traffic-control/compare/v1.2.0...v1.3.0) (2026-09-16)
 
 
