@@ -2,6 +2,8 @@ package de.ole101.mctrafficcontrol.gui.widgets;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.NbtOps;
@@ -14,8 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -37,29 +37,26 @@ public class ComponentViewerWidget extends AbstractTextViewerWidget {
         clearDisplayTexts();
         blocks.clear();
 
-        var registryAccess = Minecraft.getInstance().player.registryAccess();
-        var nbtOps = RegistryOps.create(NbtOps.INSTANCE, registryAccess);
-        var patch = itemStack.getComponentsPatch();
+        RegistryAccess registryAccess = Minecraft.getInstance().player.registryAccess();
+        RegistryOps<Tag> nbtOps = RegistryOps.create(NbtOps.INSTANCE, registryAccess);
+        DataComponentPatch patch = itemStack.getComponentsPatch();
+        DataComponentPatch.SplitResult split = patch.split();
         Set<DataComponentType<?>> patchedComponents = new HashSet<>();
         if (!patch.isEmpty()) {
             addHeader("mtc.component_viewer.patched");
         }
 
-        for (Map.Entry<DataComponentType<?>, Optional<?>> entry : patch.entrySet()) {
-            DataComponentType<?> componentType = entry.getKey();
+        // Components that were added or changed compared to the item's prototype
+        for (TypedDataComponent<?> component : split.added()) {
+            addLinesForDataComponent(component, nbtOps);
+            patchedComponents.add(component.type());
+        }
 
-            if (entry.getValue().isEmpty()) {
-                addText(Component.literal(componentType.toString()).withColor(0xE5C17C));
-                addText(Component.translatable("mtc.component_viewer.removed").withStyle(ChatFormatting.RED));
-                addText(FormattedText.EMPTY);
-                continue;
-            }
-
-            TypedDataComponent<?> component = itemStack.getTyped(componentType);
-            if (component != null) {
-                addLinesForDataComponent(component, nbtOps);
-                patchedComponents.add(componentType);
-            }
+        // Components that were removed from the prototype
+        for (DataComponentType<?> removedType : split.removed()) {
+            addText(Component.literal(removedType.toString()).withColor(0xE5C17C));
+            addText(Component.translatable("mtc.component_viewer.removed").withStyle(ChatFormatting.RED));
+            addText(FormattedText.EMPTY);
         }
 
         boolean addDefaultHeader = !patch.isEmpty();

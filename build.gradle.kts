@@ -5,8 +5,15 @@ plugins {
     `maven-publish`
 }
 
-version = providers.gradleProperty("mod_version").get()
 group = providers.gradleProperty("maven_group").get()
+version = providers
+    .gradleProperty("mod_version")
+    .orElse(
+        providers
+            .fileContents(layout.projectDirectory.file("version.txt"))
+            .asText
+            .map { "${it.trim()}-development" },
+    ).get()
 
 repositories {
     mavenCentral()
@@ -38,7 +45,7 @@ dependencies {
     implementation("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
     // Lattice
-    implementation("com.moulberry:lattice:2.1.0")
+    implementation("com.moulberry:lattice:2.2.0")
 }
 
 tasks.processResources {

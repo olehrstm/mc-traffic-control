@@ -1,5 +1,6 @@
 package de.ole101.mctrafficcontrol.gui.widgets;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.ole101.mctrafficcontrol.gui.font.CustomGlyphs;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,9 +75,9 @@ public abstract class AbstractTextViewerWidget extends AbstractScrollArea {
             return false;
         }
 
-        if (event.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             drag = new Drag(event.button(), getX() - (int) event.x(), getY() - (int) event.y(), event.x(), event.y());
-        } else if (event.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        } else if (event.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
             drag = new Drag(event.button(), getRight() - (int) event.x(), getBottom() - (int) event.y(), event.x(), event.y());
         }
 
@@ -181,10 +181,10 @@ public abstract class AbstractTextViewerWidget extends AbstractScrollArea {
                                                   int mouseX, int mouseY, float partialTick) {
         Font font = FONT.get();
 
-        if (drag != null && drag.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (drag != null && drag.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             setX(Math.clamp(mouseX + drag.offsetX(), 0, Math.max(0, graphics.guiWidth() - width)));
             setY(Math.clamp(mouseY + drag.offsetY(), 0, Math.max(0, graphics.guiHeight() - height)));
-        } else if (drag != null && drag.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        } else if (drag != null && drag.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
             setWidth(Math.clamp(mouseX + drag.offsetX() - getX(), MIN_WIDTH,
                     Math.max(MIN_WIDTH, graphics.guiWidth() - getX())));
             setHeight(Math.clamp(mouseY + drag.offsetY() - getY(), MIN_HEIGHT,
@@ -220,7 +220,7 @@ public abstract class AbstractTextViewerWidget extends AbstractScrollArea {
         Drag released = drag;
         drag = null;
 
-        if (released.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT
+        if (released.button() == InputConstants.MOUSE_BUTTON_LEFT
                 && Math.abs(event.x() - released.startX()) < CLICK_TOLERANCE
                 && Math.abs(event.y() - released.startY()) < CLICK_TOLERANCE) {
             int index = lineAt(event.y());
