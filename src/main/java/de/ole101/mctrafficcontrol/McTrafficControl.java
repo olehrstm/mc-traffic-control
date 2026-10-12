@@ -1,5 +1,6 @@
 package de.ole101.mctrafficcontrol;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.moulberry.lattice.Lattice;
 import com.moulberry.lattice.element.LatticeElements;
 import de.ole101.mctrafficcontrol.configuration.Configuration;
@@ -14,7 +15,6 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM;
 import static net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping;
 import static net.minecraft.client.KeyMapping.Category.register;
 import static net.minecraft.network.chat.CommonComponents.SPACE;
@@ -22,7 +22,6 @@ import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
 import static net.minecraft.resources.Identifier.fromNamespaceAndPath;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
 
 public class McTrafficControl implements ModInitializer {
 
@@ -41,8 +40,8 @@ public class McTrafficControl implements ModInitializer {
             .append(translatable("options.title"));
 
     public static final KeyMapping.Category KEY_CATEGORY = register(id("name"));
-    public static final KeyMapping COMPONENT_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_components", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
-    public static final KeyMapping CONTAINER_PACKET_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_container_packets", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
+    public static final KeyMapping COMPONENT_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_components", InputConstants.Type.KEYBOARD, InputConstants.UNKNOWN.getValue(), KEY_CATEGORY));
+    public static final KeyMapping CONTAINER_PACKET_VIEWER_KEY = registerKeyMapping(new KeyMapping("mtc.key.view_container_packets", InputConstants.Type.KEYBOARD, InputConstants.UNKNOWN.getValue(), KEY_CATEGORY));
 
     public static final ComponentViewerWidget COMPONENT_VIEWER_WIDGET = new ComponentViewerWidget();
     public static final ContainerPacketWidget CONTAINER_PACKET_WIDGET = new ContainerPacketWidget();

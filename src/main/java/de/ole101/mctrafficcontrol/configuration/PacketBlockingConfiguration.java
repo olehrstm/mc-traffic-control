@@ -1,11 +1,11 @@
 package de.ole101.mctrafficcontrol.configuration;
 
+import com.mojang.blaze3d.Blaze3D;
 import com.moulberry.lattice.WidgetFunction;
 import com.moulberry.lattice.annotation.LatticeOption;
 import com.moulberry.lattice.annotation.widget.LatticeWidgetButton;
 import com.moulberry.lattice.annotation.widget.LatticeWidgetCustom;
 import lombok.Data;
-import net.minecraft.util.Util;
 
 import java.net.URI;
 import java.util.LinkedHashSet;
@@ -23,7 +23,7 @@ public class PacketBlockingConfiguration {
 
     @LatticeOption(title = "mtc.option.packet_blocking.hint")
     @LatticeWidgetButton
-    private transient Runnable openPacketList = () -> Util.getPlatform().openUri(PACKET_LIST_URI);
+    private transient Runnable openPacketList = () -> Blaze3D.openUri(PACKET_LIST_URI);
 
     @LatticeOption(title = "mtc.option.packet_blocking.incoming_enabled.label",
                    description = "mtc.option.packet_blocking.incoming_enabled.description")
